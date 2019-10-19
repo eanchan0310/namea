@@ -1,15 +1,36 @@
 <!DOCTYPE html>
 <html>
     <head> 
-        <title>HTML Tutorial</title>
+           <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Making Tabs</title>
         <link rel="stylesheet" href="./css/index.css">
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.19.0/phaser.min.js"></script>
     </head>
 
 
     
-    <body>
-        <h1 id='hello'>Hello</h1>
-        <script src = './js/index.js'></script>
+    <body style="padding: 20px">
+    <h1 class="title">Tabs</h1>
+    <div class="tabContainer">
+        <div class="buttonContainer">
+            <button>tab 1</button>
+            <button>tab 2</button>
+            <button>tab 3</button>
+            <button>tab 4</button>
+        </div>
+        <div class="tabPanel">Tab 1:Content</div>
+        <div class="tabPanel">Tab 2:Content</div>
+        <div class="tabPanel">Tab 3:Content</div>
+        <div class="tabPanel">Tab 4:Content</div>
+
+
+    </div>
+
+
+
+
+
+
+    <script src="index.js"></script>
     </body>
 </html>
