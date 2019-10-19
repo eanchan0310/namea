@@ -11,7 +11,7 @@
     height: 15%;
 }
 .tabContainer .buttonContainer button{
-    width: 25%;
+    width: 33.3%;
     height: 100%;
     float: left;
     border: none;
@@ -26,13 +26,23 @@
     background-color: #d7d4d4;
 }
 .tabContainer .tabPanel{
-    height: 85%;
+    /* height: 85%; */
     background-color: gray;
     color: white;
     text-align: center;
-    padding-top: 105px;
-    box-sizing: border-box;
+    /* padding-top: 105px; */
+    /* box-sizing: border-box; */
     font-family: sans-serif;
     font-size: 22px;
     display: none;
+    padding-top: 10%;
+    padding-bottom: 10%;
+}
+img {
+    width: 15%;
+    /* height: 25%; */
+    /* padding-top: 15%; */
+}
+#phaser-example {
+ width 100%;
 }
