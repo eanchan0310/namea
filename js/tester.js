@@ -1,10 +1,10 @@
 window.onload = function() {
 	var config = {
-	    type: Phaser.Scale.FIT,
+	    type: Phaser.AUTO,
 	    scale: {
 		width: 800,
 		height: 600,
-		mode: Phaser.Scale.AUTO,
+		mode: Phaser.Scale.FIT,
 		autoCenter: Phaser.Scale.CENTER_BOTH
 	    },
 	    parent: 'phaser-example',
