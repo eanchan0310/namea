@@ -1,6 +1,6 @@
 window.onload = function() {
 	var config = {
-	    type: Phaser.FIT,
+	    type: Phaser.Scale.FIT,
 	    scale: {
 		width: 800,
 		height: 600,
