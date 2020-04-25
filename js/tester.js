@@ -4,7 +4,7 @@ window.onload = function() {
 	    scale: {
 		width: 800,
 		height: 600,
-		mode: Phaser.Scale.FIT,
+		mode: Phaser.Scale.AUTO,
 		autoCenter: Phaser.Scale.CENTER_BOTH
 	    },
 	    parent: 'phaser-example',
