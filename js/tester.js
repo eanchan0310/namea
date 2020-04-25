@@ -1,33 +1,34 @@
-var config = {
-    type: Phaser.AUTO,
-    scale: {
-        width: 800,
-        height: 600,
-        mode: Phaser.Scale.AUTO,
-        autoCenter: Phaser.Scale.CENTER_BOTH
-    },
-    parent: 'phaser-example',
-    scene: {
-        preload: preload,
-        create: create,
-        update: update
-    },
-    physics: {
-        default: 'arcade',
-        arcade: {
-            debug: false
-        }
-    },
-    audio: {
-        disableWebAudio: true
-    }
-};
-
+window.onload = function() {
+	var config = {
+	    type: Phaser.AUTO,
+	    scale: {
+		width: 800,
+		height: 600,
+		mode: Phaser.Scale.FIT,
+		autoCenter: Phaser.Scale.CENTER_BOTH
+	    },
+	    parent: 'phaser-example',
+	    scene: {
+		preload: preload,
+		create: create,
+		update: update
+	    },
+	    physics: {
+		default: 'arcade',
+		arcade: {
+		    debug: false
+		}
+	    },
+	    audio: {
+		disableWebAudio: true
+	    }
+	};
+	var game = new Phaser.Game(config);
+}
 document.body.style.backgroundColor = "green";        
 
 
 // <전역 변수 선언>
-var game = new Phaser.Game(config);
 
 var player;
 var dead_chicken;
