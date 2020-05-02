@@ -88,7 +88,7 @@ class levelManager {
         return this.level[_idx];
     }
 }
-var tmpLM = new levelManager();
+var tmpLM = new levelManager(); 
 
 var score = {};
 score.self = undefined;
