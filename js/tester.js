@@ -1,3 +1,10 @@
+var w = window.innerWidth
+var h = window.innerHeight
+
+
+
+
+
 var config = {
     type: Phaser.AUTO,
     scale: {
@@ -15,13 +22,28 @@ var config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: false
+            debug: true
         }
     },
     audio: {
         disableWebAudio: true
     }
 };
+
+
+
+
+if(w > h){
+    config.scale.width = h * 4 / 3
+    config.scale.height = h
+}
+else{
+    config.scale.width = w
+    config.scale.height = w * 3 / 4
+}
+scenew = config.scale.width
+sceneh = config.scale.height
+
 
 document.body.style.backgroundColor = "green";        
 
@@ -120,7 +142,7 @@ function create()
     this.cameras.main.setBackgroundColor('#bbbbbb');
 
     background_1 = this.add.image(0, 0, 'background');
-    background_1.setDisplaySize(800, 600);
+    background_1.setDisplaySize(scenew, sceneh);
     background_1.setOrigin(0);
 
     start = this.add.text(400, 480, 'press to start', { fontFamily: 'Arial', fontSize: 40, color: 'blue' });
@@ -135,7 +157,7 @@ function create()
     retry_picture.setInteractive();
     init_retry_picture(false);
     retry_picture.setAlpha(0.01);
-    retry_picture.setDisplaySize(800, 600)
+    retry_picture.setDisplaySize(scenew, sceneh)
     retry_picture.setOrigin(0);
 
     rank_block[0] = this.add.image(0, 0, 'rank_block');
@@ -168,7 +190,9 @@ function create()
         rank_cont[i] = this.add.container(0, 70 + 80 * (i+1));
         rank_cont[i].add(rank_block[i]);
         rank_cont[i].add(score.bestTxt[i]);
-        rank_cont[i].setScale(0.5);
+        // rank_cont[i].setDisplaySize(scenew / 3, sceneh / 9);
+        // console.log(scenew, sceneh);
+        // console.log(rank_cont[i].width);
     }
 
     init_cont_x.call(this);
@@ -190,13 +214,16 @@ function create()
     dead_chicken.setVisible(false)
 
     for(i=0; i<5; i++){
-        FireList[i] = this.physics.add.image(0, Random_Int(500, 10), 'Fire');
+        FireList[i] = this.physics.add.image(0, Random_Int(sceneh, 10), 'Fire');
         FireList[i].setDisplaySize(60, 73);
         FireList[i].setCircle(28, FireList[i].width/2 - 25, FireList[i].height/2 - 28)
+        FireList[i].angle = -90
 
-        FireList[i+5] = this.physics.add.image(Random_Int(700, 10), 0, 'Fire');
+        
+        FireList[i+5] = this.physics.add.image(Random_Int(scenew, 10), 0, 'Fire');
         FireList[i+5].setDisplaySize(60, 73);
         FireList[i+5].setCircle(28, FireList[i+5].width/2 - 25, FireList[i+5].height/2 - 28)
+        
     }
     init_Fire(false);
 
@@ -310,11 +337,11 @@ function create()
         }
     });
 
+    console.log(" player width", player.width, "\n player height", player.height, "\nplayer", player);
+
+
     // PhaserGUIAction(
-	// 	this,
-	// 	{
-	// 		alpha: 0.6,
-	// 	}
+	// 	this
 	// );
 }
 // <!create>
@@ -323,21 +350,21 @@ function create()
 function update()
 {
     // <벽 통과 방지>
-    if(player.x >= 770){
-        player.x = 770;
+    if(player.x >= scenew - player.body.width / 2){
+        player.x = scenew - player.body.width / 2;
     }
-    else if(player.x <= 30){
-        player.x = 30;
+    else if(player.x <= player.body.width / 2){
+        player.x = player.body.width / 2;
     }
 
-    if(player.y >= 570){
-        player.y = 570;
+    if(player.y >= sceneh - player.body.height / 2){
+        player.y = sceneh - player.body.height / 2;
     }
-    else if(player.y <= 30){
-        player.y = 30;
+    else if(player.y <= player.body.height / 2){
+        player.y = sceneh - player.body.height / 2;
     }
     // <!벽 통과 방지>
-    
+
     updateScore();
 
 }
@@ -408,9 +435,11 @@ function when_retry() {
         for(i=0; i<tweenN.length; i++){
             if(i<5){
                 tween_LR.call(this, FireList[i], i);
+                FireList[i].angle = -90
             }
             else{
                 tween_UD.call(this, FireList[i], i);
+                FireList[i].angle = 0
             }
         }
     }, delay)
@@ -455,28 +484,29 @@ function init_Fire(bool) {
 function tween_LR(target, i) {
     tweenN[i] = this.tweens.add({
         targets: target,
-        x: 800, 
+        x: scenew, 
         duration: Random_Double(5, 1)*1000, 
         ease: 'Linear',
         yoyo: true,
         onYoyo: function () { 
-            target.y = Random_Int(600, 0)
+            target.y = Random_Int(sceneh, 0)
+            target.angle = 90
         },
         onUpdate: () => {
             if(player.visible == false){
                 // console.log('remove', i)
                 tweenN[i].remove();
                 target.x = 0
-                target.y = Random_Int(600, 0);
+                target.y = Random_Int(sceneh, 0);
                 if(i == 9){
                     retry_on = true;
                 }
             }
         },
         onComplete: () => { 
-            
+            target.angle = -90;
             if(player.visible == true){
-                target.y = Random_Int(600, 0);
+                target.y = Random_Int(sceneh, 0);
                 tween_LR.call(this, target, i);
             }
         }
@@ -485,19 +515,20 @@ function tween_LR(target, i) {
 function tween_UD(target, i) {
     tweenN[i] = this.tweens.add({
         targets: target,
-        y: 600, 
+        y: sceneh, 
         duration: Random_Double(5, 1)*1000, 
         ease: 'Linear',
         yoyo: true,
         repeat: 0,
         onYoyo: function () { 
-            target.x = Random_Int(800, 0);
+            target.angle = 180
+            target.x = Random_Int(scenew, 0);
         },
         onUpdate: () => {
             if(player.visible == false){
                 // console.log('remove', i)
                 tweenN[i].remove();
-                target.x = Random_Int(800, 0);
+                target.x = Random_Int(scenew, 0);
                 target.y = 0;
                 if(i == 9){
                     retry_on = true;
@@ -506,7 +537,8 @@ function tween_UD(target, i) {
         },
         onComplete: () => { 
             if(player.visible == true){
-                target.x = Random_Int(800, 0);
+                target.angle = 0
+                target.x = Random_Int(scenew, 0);
                 tween_UD.call(this, target, i);
             }
         }
@@ -515,7 +547,7 @@ function tween_UD(target, i) {
 function tween_cont(target, i) {
     tweenC = this.tweens.add({
         targets: target,
-        x: this.sys.scale.width/2,
+        x: scenew/2,
         duration: i,
         ease: 'Bounce.easeIn',
         yoyo: false,
@@ -553,7 +585,7 @@ function Random_Double (max, min){
 
 function init_cont_x() {
     rank_cont[0].x = -(contWidth / 2);
-    rank_cont[1].x = this.sys.scale.width + (contWidth / 2);
+    rank_cont[1].x = scenew + (contWidth / 2);
     rank_cont[2].x = -(contWidth / 2);
     // console.log("0 x", rank_cont[0].x)
     // console.log("1 x", rank_cont[1].x)

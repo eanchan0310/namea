@@ -1,0 +1,24 @@
+{
+  "name": "namea",
+  "version": "1.0.0",
+  "description": "어떠한 값을 담을 수 있는 공간이다.",
+  "main": "index.js",
+  "dependencies": {
+    "http-server": "^0.12.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "http-server -c-1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eanchan0310/namea.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eanchan0310/namea/issues"
+  },
+  "homepage": "https://github.com/eanchan0310/namea#readme"
+}

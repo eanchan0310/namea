@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head> 
-           <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Making Tabs</title>
         <link rel="stylesheet" href="./css/index.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.19.0/phaser.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_inspector@latest/dist/PGInspector.min.js"></script>  
     </head>
 
 
@@ -14,16 +15,9 @@
     <div class="tabContainer">
         <div class="buttonContainer">
             <button onclick="showPanel(0,'#f44336')">Phaser</button>
-            <button onclick="showPanel(1,'#4caf50')">Tab 2</button>
-            <button onclick="showPanel(2,'#2196f3')">QR</button>
         </div>
         <div class="tabPanel">
             <div id='phaser-example'></div>
-        </div>
-        
-        <div class="tabPanel">Tab 2:Content</div>
-        <div class="tabPanel">
-            <img src="./namea/image/frame.png">
         </div>
     </div>
 
@@ -32,6 +26,7 @@
 
 
 
+    <script src="./js/index.js"></script>
     <script src="./js/tester.js"></script>
     </body>
 </html>
