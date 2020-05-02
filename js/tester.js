@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 var w = window.innerWidth
 var h = window.innerHeight
 
@@ -46,39 +45,11 @@ scenew = config.scale.width
 sceneh = config.scale.height
 
 
-=======
-window.onload = function() {
-	var config = {
-	    type: Phaser.AUTO,
-	    scale: {
-		width: 800,
-		height: 600,
-		mode: Phaser.Scale.FIT,
-		autoCenter: Phaser.Scale.CENTER_BOTH
-	    },
-	    parent: 'phaser-example',
-	    scene: {
-		preload: preload,
-		create: create,
-		update: update
-	    },
-	    physics: {
-		default: 'arcade',
-		arcade: {
-		    debug: false
-		}
-	    },
-	    audio: {
-		disableWebAudio: true
-	    }
-	};
-	var game = new Phaser.Game(config);
-}
->>>>>>> 962a4cc8a99823475ff3e8fe37ebc5d1895dfe60
 document.body.style.backgroundColor = "green";        
 
 
 // <전역 변수 선언>
+var game = new Phaser.Game(config);
 
 var player;
 var dead_chicken;
