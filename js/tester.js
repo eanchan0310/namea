@@ -1,7 +1,7 @@
+import star from './item/star.js'
+
 var w = window.innerWidth
 var h = window.innerHeight
-
-
 
 
 
@@ -41,8 +41,8 @@ else{
     config.scale.width = w
     config.scale.height = w * 3 / 4
 }
-scenew = config.scale.width
-sceneh = config.scale.height
+var scenew = config.scale.width
+var sceneh = config.scale.height
 
 
 document.body.style.backgroundColor = "green";        
@@ -67,28 +67,33 @@ var bool = true;
 var random = 0;
 var delay = 3000;
 
-class levelManager {
-    constructor() {
-        this.level = [];
-        this.self = 1;
-        this.initLevel();
-    }
-    setCommon(_fireNum, _twDur) {
-        var tmpO = {};
-        tmpO.fireNum = _fireNum;
-        tmpO.twDur = _twDur;
-        return tmpO;
-    }
-    initLevel() {
-        this.level.push(this.setCommon(5, Random_Double(7, 3)*1000));
-        this.level.push(this.setCommon(5, Random_Double(5, 1)*1000));
-        this.level.push(this.setCommon(10, Random_Double(5, 1)*1000));
-    }
-    getLevel(_idx) {
-        return this.level[_idx];
-    }
-}
-var tmpLM = new levelManager(); 
+// class levelManager {
+//     constructor() {
+//         this.level = [];
+//         this.self = 1;
+//         this.initLevel();
+//     }
+//     setCommon(_fireNum, _twDur) {
+//         var tmpO = {};
+//         tmpO.fireNum = _fireNum;
+//         tmpO.twDur = _twDur;
+//         return tmpO;
+//     }
+//     initLevel() {
+//         this.level.push(this.setCommon(5, Random_Double(7, 3)*1000));
+//         this.level.push(this.setCommon(5, Random_Double(5, 1)*1000));
+//         this.level.push(this.setCommon(10, Random_Double(5, 1)*1000));
+//     }
+//     getLevel(_idx) {
+//         return this.level[_idx]; 
+//     }
+// }
+// var tmpLM = new levelManager(); 
+
+var retry = undefined;  
+
+var contWidth = undefined;
+var scoreWidth = undefined;
 
 var score = {};
 score.self = undefined;
@@ -107,6 +112,16 @@ var test_music = undefined;
 
 var rank_block = [];
 var rank_cont = [];
+
+var playing_music = undefined;
+var ghost_music = undefined;
+
+var rank_music1 = undefined;
+var rank_music2 = undefined;
+var rank_music3 = undefined;
+
+
+var item_star = undefined;
 // <!전역 변수 선언>
 
 // <preload>
@@ -125,13 +140,15 @@ function preload(){
     this.load.audio('rank2', './assets/audio/Pickup_coin_rank2.wav');
     this.load.audio('rank3', './assets/audio/Pickup_coin_rank3.wav');
 
+
+    item_star = new star(this);
 }
 // <!preload>
 
 // <create>
 function create() 
-{    
-    // <background, start, retry, score, player, Fire, Gameover 생성>
+{
+    // <background, start, retry, score, player, Fire 생성>
     test_music = this.sound.add('theme'); 
     ghost_music = this.sound.add('ghost');
     playing_music = this.sound.add('tetris');
@@ -227,10 +244,14 @@ function create()
     }
     init_Fire(false);
 
-    GameOver = this.add.text(400, 300, 'GameOver', { fontFamily: 'Arial', fontSize: 100, color: 'yellow' });
-    GameOver.setOrigin(0.5);
-    GameOver.setVisible(false);
-    // <!background, start, retry, score, player, Fire, Gameover 생성>
+
+
+
+    item_star.create(player, score);
+
+
+
+    // <!background, start, retry, score, player, Fire 생성>
 
     // <Press to start 첫 시작 이벤트>
     this.input.once('pointerdown', (pointer) => {
@@ -265,7 +286,6 @@ function create()
                 init_player(false);
                 init_Fire(false);
                 init_retry_picture(true);
-                // GameOver.setVisible(true);
                 retry.setVisible(true);
                 scoreToggleBoolean(false);
                 dead_chicken.setVisible(true);
@@ -423,7 +443,6 @@ function when_retry() {
     init_retry_picture(false);
     init_player(true);
     dead_chicken.setVisible(false);
-    GameOver.setVisible(false);
     retry.setVisible(false);
     score.self.setVisible(true);
     init_cont_x.call(this);
@@ -545,7 +564,7 @@ function tween_UD(target, i) {
     });
 }
 function tween_cont(target, i) {
-    tweenC = this.tweens.add({
+    var tweenC = this.tweens.add({
         targets: target,
         x: scenew/2,
         duration: i,
