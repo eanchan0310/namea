@@ -1,8 +1,8 @@
 import star from './item/star.js'
 
-var w = window.innerWidth
-var h = window.innerHeight
-
+let gameSize = {
+    w: 800, h: 600
+};
 
 
 var config = {
@@ -30,19 +30,6 @@ var config = {
     }
 };
 
-
-
-
-if(w > h){
-    config.scale.width = h * 4 / 3
-    config.scale.height = h
-}
-else{
-    config.scale.width = w
-    config.scale.height = w * 3 / 4
-}
-var scenew = config.scale.width
-var sceneh = config.scale.height
 
 
 document.body.style.backgroundColor = "green";        
@@ -159,7 +146,7 @@ function create()
     this.cameras.main.setBackgroundColor('#bbbbbb');
 
     background_1 = this.add.image(0, 0, 'background');
-    background_1.setDisplaySize(scenew, sceneh);
+    background_1.setDisplaySize(gameSize.w, gameSize.h);
     background_1.setOrigin(0);
 
     start = this.add.text(400, 480, 'press to start', { fontFamily: 'Arial', fontSize: 40, color: 'blue' });
@@ -174,19 +161,19 @@ function create()
     retry_picture.setInteractive();
     init_retry_picture(false);
     retry_picture.setAlpha(0.01);
-    retry_picture.setDisplaySize(scenew, sceneh)
+    retry_picture.setDisplaySize(gameSize.w, gameSize.h)
     retry_picture.setOrigin(0);
 
     rank_block[0] = this.add.image(0, 0, 'rank_block');
     rank_block[1] = this.add.image(0, 0, 'rank_block');
     rank_block[2] = this.add.image(0, 0, 'rank_block');
-    rank_block[0].setDisplaySize(400*2, 70*2);
-    rank_block[1].setDisplaySize(400*2, 70*2);
-    rank_block[2].setDisplaySize(400*2, 70*2);
-    contWidth = rank_block[0].width;
     rank_block[0].setOrigin(0.5);
     rank_block[1].setOrigin(0.5);
     rank_block[2].setOrigin(0.5);
+    rank_block[0].setDisplaySize(gameSize.w / 3 * 2, gameSize.h / 6);
+    rank_block[1].setDisplaySize(gameSize.w / 3 * 2, gameSize.h / 6);
+    rank_block[2].setDisplaySize(gameSize.w / 3 * 2, gameSize.h / 6);
+    contWidth = rank_block[0].width;
 
     score.self = this.add.text(400 , 60, 'Score: ' + score.num, { fontFamily: 'Arial', fontSize: 50, color: 'white' });
     score.self.setStroke('#000000', 5);
@@ -201,14 +188,17 @@ function create()
     score.bestTxt[2].setStroke('#000000', 3);
     score.bestTxt[0].setOrigin(0.5);
     score.bestTxt[1].setOrigin(0.5);
-    score.bestTxt[2].setOrigin(0.5);
+    score.bestTxt[2].setOrigin(0.5);   
+    score.bestTxt[0].setDisplaySize(gameSize.w / 3, gameSize.h / 9);
+    score.bestTxt[1].setDisplaySize(gameSize.w / 3, gameSize.h / 9);
+    score.bestTxt[2].setDisplaySize(gameSize.w / 3, gameSize.h / 9);
 
     for(var i=0; i<3; i++){
         rank_cont[i] = this.add.container(0, 70 + 80 * (i+1));
         rank_cont[i].add(rank_block[i]);
         rank_cont[i].add(score.bestTxt[i]);
-        // rank_cont[i].setDisplaySize(scenew / 3, sceneh / 9);
-        // console.log(scenew, sceneh);
+        // rank_cont[i].setDisplaySize(gameSize.w / 3, gameSize.h / 9);
+        // console.log(gameSize.w, gameSize.h);
         // console.log(rank_cont[i].width);
     }
 
@@ -231,13 +221,13 @@ function create()
     dead_chicken.setVisible(false)
 
     for(i=0; i<5; i++){
-        FireList[i] = this.physics.add.image(0, Random_Int(sceneh, 10), 'Fire');
+        FireList[i] = this.physics.add.image(0, Random_Int(gameSize.h, 10), 'Fire');
         FireList[i].setDisplaySize(60, 73);
         FireList[i].setCircle(28, FireList[i].width/2 - 25, FireList[i].height/2 - 28)
         FireList[i].angle = -90
 
         
-        FireList[i+5] = this.physics.add.image(Random_Int(scenew, 10), 0, 'Fire');
+        FireList[i+5] = this.physics.add.image(Random_Int(gameSize.w, 10), 0, 'Fire');
         FireList[i+5].setDisplaySize(60, 73);
         FireList[i+5].setCircle(28, FireList[i+5].width/2 - 25, FireList[i+5].height/2 - 28)
         
@@ -262,6 +252,7 @@ function create()
         player.setInteractive();
         this.input.setDraggable(player);
         init_player(true);
+        item_star.onceGame();
         setTimeout( () => {
             scoreToggleBoolean(true);
             init_Fire(true);
@@ -289,7 +280,10 @@ function create()
                 retry.setVisible(true);
                 scoreToggleBoolean(false);
                 dead_chicken.setVisible(true);
-                score.self.setVisible(false);
+                // score.self.setVisible(false);
+                console.log(score.self)
+                item_star.playerDeath();
+
 
                 if(score.best[0] < score.num){
                     score.best[2] = score.best[1];
@@ -358,7 +352,7 @@ function create()
     });
 
     console.log(" player width", player.width, "\n player height", player.height, "\nplayer", player);
-
+    console.log("star", item_star)
 
     // PhaserGUIAction(
 	// 	this
@@ -370,22 +364,26 @@ function create()
 function update()
 {
     // <벽 통과 방지>
-    if(player.x >= scenew - player.body.width / 2){
-        player.x = scenew - player.body.width / 2;
+    if(player.x >= gameSize.w - player.body.width / 2){
+        player.x = gameSize.w - player.body.width / 2;
     }
     else if(player.x <= player.body.width / 2){
         player.x = player.body.width / 2;
     }
 
-    if(player.y >= sceneh - player.body.height / 2){
-        player.y = sceneh - player.body.height / 2;
+    if(player.y >= gameSize.h - player.body.height / 2){
+        player.y = gameSize.h - player.body.height / 2;
     }
     else if(player.y <= player.body.height / 2){
-        player.y = sceneh - player.body.height / 2;
+        player.y = gameSize.h - player.body.height / 2;
     }
     // <!벽 통과 방지>
 
     updateScore();
+
+    item_star.update(score);
+
+
 
 }
 // <!update>
@@ -437,14 +435,14 @@ function distanceY(_pointerY) {
  
 // <retry 기능>
 function when_retry() {
+    ghost_music.stop();
     playing_music.setLoop(true);
     playing_music.play();
-    ghost_music.stop();
     init_retry_picture(false);
     init_player(true);
     dead_chicken.setVisible(false);
     retry.setVisible(false);
-    score.self.setVisible(true);
+    item_star.retryGame();
     init_cont_x.call(this);
     init_cont_y();
 
@@ -473,7 +471,6 @@ function updateScore() {
     }
     else {
         score.num = 0;
-        
     }
 }
 // <!update 기능>
@@ -503,12 +500,12 @@ function init_Fire(bool) {
 function tween_LR(target, i) {
     tweenN[i] = this.tweens.add({
         targets: target,
-        x: scenew, 
+        x: gameSize.w, 
         duration: Random_Double(5, 1)*1000, 
         ease: 'Linear',
         yoyo: true,
         onYoyo: function () { 
-            target.y = Random_Int(sceneh, 0)
+            target.y = Random_Int(gameSize.h, 0)
             target.angle = 90
         },
         onUpdate: () => {
@@ -516,7 +513,7 @@ function tween_LR(target, i) {
                 // console.log('remove', i)
                 tweenN[i].remove();
                 target.x = 0
-                target.y = Random_Int(sceneh, 0);
+                target.y = Random_Int(gameSize.h, 0);
                 if(i == 9){
                     retry_on = true;
                 }
@@ -525,7 +522,7 @@ function tween_LR(target, i) {
         onComplete: () => { 
             target.angle = -90;
             if(player.visible == true){
-                target.y = Random_Int(sceneh, 0);
+                target.y = Random_Int(gameSize.h, 0);
                 tween_LR.call(this, target, i);
             }
         }
@@ -534,20 +531,20 @@ function tween_LR(target, i) {
 function tween_UD(target, i) {
     tweenN[i] = this.tweens.add({
         targets: target,
-        y: sceneh, 
+        y: gameSize.h, 
         duration: Random_Double(5, 1)*1000, 
         ease: 'Linear',
         yoyo: true,
         repeat: 0,
         onYoyo: function () { 
             target.angle = 180
-            target.x = Random_Int(scenew, 0);
+            target.x = Random_Int(gameSize.w, 0);
         },
         onUpdate: () => {
             if(player.visible == false){
                 // console.log('remove', i)
                 tweenN[i].remove();
-                target.x = Random_Int(scenew, 0);
+                target.x = Random_Int(gameSize.w, 0);
                 target.y = 0;
                 if(i == 9){
                     retry_on = true;
@@ -557,7 +554,7 @@ function tween_UD(target, i) {
         onComplete: () => { 
             if(player.visible == true){
                 target.angle = 0
-                target.x = Random_Int(scenew, 0);
+                target.x = Random_Int(gameSize.w, 0);
                 tween_UD.call(this, target, i);
             }
         }
@@ -566,7 +563,7 @@ function tween_UD(target, i) {
 function tween_cont(target, i) {
     var tweenC = this.tweens.add({
         targets: target,
-        x: scenew/2,
+        x: gameSize.w/2,
         duration: i,
         ease: 'Bounce.easeIn',
         yoyo: false,
@@ -604,7 +601,7 @@ function Random_Double (max, min){
 
 function init_cont_x() {
     rank_cont[0].x = -(contWidth / 2);
-    rank_cont[1].x = scenew + (contWidth / 2);
+    rank_cont[1].x = gameSize.w + (contWidth / 2);
     rank_cont[2].x = -(contWidth / 2);
     // console.log("0 x", rank_cont[0].x)
     // console.log("1 x", rank_cont[1].x)
