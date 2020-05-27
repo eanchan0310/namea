@@ -3,7 +3,7 @@ export default class star{
         this.scene = _scene;
         this.gameSize = _gameSize;
         this.preload();
-        this.plus_score = 500;
+        this.plus_score = 1000;
         this.width = 50;
         this.height = 50;
         this.self = undefined;   
@@ -89,8 +89,7 @@ export default class star{
     onceGame() {
         this.interval_score = 0;
         this.set_loc(this.gameSize.w, this.gameSize.h);
-        console.log('scene w,h:', this.gameSize.w, this.gameSize.h)
-        this.self.setVisible(true);
+        console.log('scene w,h:', this.gameSize.w, this.gameSize.h);
         this.create_star_snd.play();
         this.collider.active = true;
     }
@@ -114,7 +113,7 @@ export default class star{
     }
 
     update(score) {
-        if(score.num > this.interval_score + 500) {
+        if(score.num > this.interval_score + 800) {
             this.control_star(true);
             this.create_star_snd.play();
             this.interval_score = score.num;
@@ -141,7 +140,7 @@ export default class star{
             onComplete: () => {
                 this.score_text.setScale(0);
                 this.score_text.setAlpha(1);
-                this.set_loc(400, 300);
+                this.set_loc(this.gameSize.w, this.gameSize.h);
             }
         })
     }

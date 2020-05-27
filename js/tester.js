@@ -375,7 +375,7 @@ function update()
         player.y = gameSize.h - player.body.height / 2;
     }
     else if(player.y <= player.body.height / 2){
-        player.y = gameSize.h - player.body.height / 2;
+        player.y = player.body.height / 2;
     }
     // <!벽 통과 방지>
 
