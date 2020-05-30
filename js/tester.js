@@ -216,7 +216,7 @@ function create()
     player.setCircle(70, player.width/2 - 60, player.height/2 - 40);
     init_player(false);
 
-    dead_chicken = this.physics.add.image(400, 480, 'deadChicken');
+    dead_chicken = this.add.image(400, 480, 'deadChicken');
     dead_chicken.setDisplaySize(70, 56)
     dead_chicken.setVisible(false)
 
