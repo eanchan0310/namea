@@ -171,6 +171,3 @@ export default class star{
 }
 
 
-// function Random_Double (max, min){
-//     return Math.random() * (max - min) + min;
-// 

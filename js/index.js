@@ -603,7 +603,6 @@ function resizeApp ()
 
 // detect portrait or landscape serial logics
 function displayLandscapeMark() { // init check landscapeor portrait
-    // window.addEventListener("resize", resize, false);
 
     var canvas = document.getElementById("phaser-example");
 
